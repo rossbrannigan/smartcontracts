@@ -1,6 +1,8 @@
 pragma solidity ^0.4.22;
 contract Auction {
     
+
+    
     // Data
     //Structure to hold details of the item
     struct Item {
@@ -26,13 +28,15 @@ contract Auction {
     uint bidderCount=0;//counter
     
     //functions
+    
+    /*constructor*/
 
-    function Auction() public payable{    //constructor
+    constructor() public payable{    //constructor
                 
         //Part 1 Task 1. Initialize beneficiary with address of smart contract’s owner
         //Hint. In the constructor,"msg.sender" is the address of the owner.
         // ** Start code here. 1 line approximately. **/
-        beneficiary = msg.sender;
+              beneficiary = msg.sender;
           //** End code here. **/
         uint[] memory emptyArray;
         items[0] = Item({itemId:0,itemTokens:emptyArray});
@@ -52,9 +56,9 @@ contract Auction {
         
         //Part 1 Task 3. Initialize the address of the bidder 
         /*Hint. Here the bidders[bidderCount].addr should be initialized with address of the registrant.*/
-
+            
         // ** Start code here. 1 line approximately. **/
-        bidders[bidderCount].addr = msg.sender;
+         bidders[bidderCount].addr = msg.sender;
         //** End code here. **
         
         bidders[bidderCount].remainingTokens = 5; // only 5 tokens
@@ -79,8 +83,9 @@ contract Auction {
         */
         
         // ** Start code here. 2 lines approximately. **/
-        if (tokenDetails[msg.sender].remainingTokens < _count || tokenDetails[msg.sender].remainingTokens == 0) {revert();}    
-        if (_itemId > 2) {revert();}   
+     require(tokenDetails[msg.sender].remainingTokens >= _count && tokenDetails[msg.sender].remainingTokens > 0);
+require(_itemId <= 2);
+
         //** End code here. **
         
         /*Part 1 Task 5. Decrement the remainingTokens by the number of tokens bid and store the value in balance variable.
@@ -103,7 +108,7 @@ contract Auction {
     //Hint : Use require to validate if "msg.sender" is equal to the "beneficiary".
     modifier onlyOwner {
         // ** Start code here. 2 lines approximately. **
-        require(beneficiary == msg.sender);        
+        require(beneficiary == msg.sender);
         _;
         //** End code here. **
     }
@@ -127,9 +132,9 @@ contract Auction {
             /* Part 1 Task 6. Assign the winners.
             Hint." bidders[winnerId] " will give you the person object with the winnerId.
             you need to assign the address of the person obtained above to winners[id] */
-
+            
             // ** Start coding here *** 1 line approximately.
-            winners[id] = bidders[winnerId].addr;
+            bidders[winnerId].personId = winnerId;
             //** end code here*
                 
             }
